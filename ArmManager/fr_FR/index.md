@@ -4,6 +4,8 @@
 
 ArmManager centralise le pilotage du plugin **Alarme** natif de Jeedom depuis vos claviers et télécommandes Zigbee. Il respecte le standard **IAS ACE** (cluster Zigbee 0x0501) exposé par Zigbee2MQTT.
 
+> **Prérequis :** le plugin **z2m** (Zigbee2MQTT officiel Jeedom) doit être installé et actif.
+
 Chaque événement reçu déclenche la commande ou le scénario de votre choix.
 
 **Appareils compatibles nativement** (standard IAS ACE Z2M)
@@ -17,7 +19,8 @@ Chaque événement reçu déclenche la commande ou le scénario de votre choix.
 
 ## Installation
 
-1. Depuis le market Jeedom, rechercher **ArmManager**
+1. Depuis le market Jeedom, installer et activer le plugin **z2m**
+2. Depuis le market Jeedom, rechercher **ArmManager**
 2. Installer le plugin
 3. Activer le plugin dans **Plugins > Gestion des plugins**
 
@@ -25,11 +28,22 @@ Aucune dépendance requise.
 
 ---
 
+## Découverte automatique
+
+Le bouton **Découverte** analyse les équipements Zigbee présents dans z2m et identifie les candidats compatibles :
+
+- **IAS ACE natif** (badge vert) : l'appareil possède le cluster `ssIasAce` — brancheable directement sur ArmManager
+- **Compatible probable** (badge orange) : l'appareil expose des valeurs arm-related sans cluster IAS ACE natif — à utiliser via EventTranslator
+
+Cliquer sur **Utiliser** crée automatiquement un équipement ArmManager pré-configuré avec la commande source. Les appareils déjà configurés sont exclus des résultats.
+
+---
+
 ## Configuration
 
 ### Étape 1 — Ajouter un équipement
 
-Ouvrir **Plugins > Sécurité > ArmManager**, puis cliquer sur **Ajouter un clavier**.
+Ouvrir **Plugins > Sécurité > ArmManager**, puis cliquer sur **Découverte** ou **Ajouter un clavier**.
 
 Renseigner :
 - **Nom** : nom de l'équipement dans Jeedom
