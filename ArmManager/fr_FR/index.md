@@ -2,14 +2,16 @@
 
 ## Présentation
 
-ArmManager centralise le pilotage du plugin **Alarme** natif de Jeedom depuis vos claviers et télécommandes Zigbee. Chaque événement reçu (`arm_away`, `arm_home`, `disarm`, `sos`) déclenche la commande ou le scénario de votre choix.
+ArmManager centralise le pilotage du plugin **Alarme** natif de Jeedom depuis vos claviers et télécommandes Zigbee. Il respecte le standard **IAS ACE** (cluster Zigbee 0x0501) exposé par Zigbee2MQTT.
 
-**Appareils compatibles nativement**
-- **DAEWOO WKE502Z** : clavier Zigbee (via Zigbee2MQTT + converter externe)
-- Tout équipement exposant les valeurs `arm_away`, `arm_home`, `disarm`, `sos`
+Chaque événement reçu déclenche la commande ou le scénario de votre choix.
+
+**Appareils compatibles nativement** (standard IAS ACE Z2M)
+- **LDESENK09** : télécommande Zigbee (cluster IAS ACE natif)
+- Tout équipement exposant les valeurs IAS ACE standard via Zigbee2MQTT
 
 **Appareils compatibles via EventTranslator**
-- **LDESENK09** et tout appareil utilisant un vocabulaire différent (cluster IAS Z2M…)
+- **DAEWOO WKE502Z** et tout appareil utilisant un vocabulaire non conforme IAS ACE
 
 ---
 
@@ -36,18 +38,20 @@ Renseigner :
 
 ### Étape 2 — Liaison Zigbee2MQTT
 
-Dans la section **Liaison Zigbee2MQTT**, sélectionner la **commande info du clavier** : c'est la commande `button` ou `action` exposée par l'équipement Z2M (ou la commande traduite par EventTranslator).
+Dans la section **Liaison Zigbee2MQTT**, sélectionner la **commande info du clavier** : c'est la commande `action` exposée par l'équipement Z2M (ou la commande traduite par EventTranslator).
 
 ### Étape 3 — Actions du clavier
 
-Pour chacun des quatre événements, choisir le type d'action et la cible :
+Pour chacun des six événements IAS ACE, choisir le type d'action et la cible :
 
-| Événement | Description |
-|---|---|
-| **Armement total** (`arm_away`) | Toutes les zones actives |
-| **Armement partiel** (`arm_home`) | Zone ouvrants uniquement |
-| **Désarmement** (`disarm`) | Désactive l'alarme |
-| **SOS** (`sos`) | Alerte d'urgence |
+| Événement | Valeur Z2M | Description |
+|---|---|---|
+| **Armement total** | `arm_all_zones` | Toutes les zones actives |
+| **Armement jour** | `arm_day_zones` | Zones périmètre (portes/fenêtres) |
+| **Armement nuit** | `arm_night_zones` | Zones intérieures (détecteurs de mouvement) |
+| **Désarmement** | `disarm` | Désactive l'alarme |
+| **Panique** | `panic` | Alerte panique |
+| **Urgence** | `emergency` | Alerte urgence |
 
 Pour chaque événement :
 - **Aucune action** : événement ignoré
@@ -60,33 +64,35 @@ Cliquer sur **Sauvegarder**. Le listener est reconstruit automatiquement.
 
 ---
 
-## Détection SOS automatique
+## Détection panique automatique
 
-Si l'équipement source expose une commande info `sos_alarm` (commande binaire indiquant une alarme active), ArmManager la surveille en permanence. Dès qu'elle passe à `1`, l'action `sos` est déclenchée **quelle que soit la valeur reçue** sur la commande principale.
+Si l'équipement source expose une commande info `sos_alarm` (commande binaire indiquant une alarme active), ArmManager la surveille en permanence. Dès qu'elle passe à `1`, l'action `panic` est déclenchée **quelle que soit la valeur reçue** sur la commande principale.
 
 ---
 
-## Exemple concret — DAEWOO WKE502Z + plugin Alarme
+## Exemple concret — LDESENK09 + plugin Alarme (natif)
 
-| Bouton clavier | Événement | Action configurée |
+La LDESENK09 est compatible nativement — elle expose directement le standard IAS ACE.
+
+| Bouton télécommande | Événement | Action configurée |
 |---|---|---|
-| Armement total | `arm_away` | `Alarme Domicile → Mode Toutes Zones` |
-| Armement partiel | `arm_home` | `Alarme Domicile → Mode Zone Ouvrants` |
+| Armement total | `arm_all_zones` | `Alarme Domicile → Mode Toutes Zones` |
+| Armement partiel | `arm_day_zones` | `Alarme Domicile → Mode Zone Ouvrants` |
 | Désarmement | `disarm` | `Alarme Domicile → Désactiver` |
-| SOS | `sos` | Scénario `Appel Secours et Aidant` |
+| SOS | `panic` | Scénario `Appel Secours et Aidant` |
 
 ---
 
-## Exemple concret — LDESENK09 via EventTranslator
+## Exemple concret — DAEWOO WKE502Z via EventTranslator
 
-La télécommande LDESENK09 expose des valeurs IAS (`arm_all_zones`, `arm_day_zones`, `disarm`, `panic`) incompatibles avec ArmManager. Utiliser **EventTranslator** pour les traduire :
+Le WKE502Z expose un vocabulaire non conforme IAS ACE (`arm_away`, `arm_home`, `sos`). Utiliser **EventTranslator** pour le traduire :
 
-| Valeur LDESENK09 | Valeur traduite |
+| Valeur WKE502Z | Valeur traduite (IAS ACE) |
 |---|---|
-| `arm_all_zones` | `arm_away` |
-| `arm_day_zones` | `arm_home` |
+| `arm_away` | `arm_all_zones` |
+| `arm_home` | `arm_day_zones` |
 | `disarm` | `disarm` |
-| `panic` | `sos` |
+| `sos` | `panic` |
 
 Sélectionner ensuite la commande traduite par EventTranslator comme source dans ArmManager.
 
@@ -102,3 +108,6 @@ L'événement est simplement ignoré, aucune erreur n'est générée.
 
 **Le plugin fonctionne-t-il sans le plugin Alarme Jeedom ?**
 Oui. Vous pouvez associer n'importe quelle commande action ou scénario, pas uniquement ceux du plugin Alarme.
+
+**Mon appareil expose `arm_night_zones` — comment l'utiliser ?**
+Configurez l'action souhaitée dans le champ **Armement nuit**. Si votre plugin Alarme ne dispose pas d'un mode nuit, vous pouvez le lier à un scénario dédié.
