@@ -149,6 +149,30 @@ Toute commande ou scénario Jeedom peut être associé à n'importe quelle valeu
 
 ---
 
+## Exemple concret — interrupteur 4 boutons (simple / double / long appui)
+
+Cet exemple illustre le cas d'usage le plus courant : un interrupteur Zigbee 4 boutons (ici un SONOFF) dont chaque bouton envoie des valeurs distinctes selon le type d'appui — simple, double ou long.
+
+Sans EventTranslator, gérer 12 combinaisons possibles (4 boutons × 3 types d'appui) nécessite un scénario complexe avec des blocs `Si/Sinon` imbriqués. Avec EventTranslator, chaque combinaison est une ligne de règle, sans une seule ligne de code.
+
+![Exemple interrupteur 4 boutons](screenshot_4buttons.png)
+
+Dans cet exemple :
+
+| Valeur source    | Type   | Action                              |
+|------------------|--------|-------------------------------------|
+| `single_button_1`| Commande | Lampe pied — toggle                |
+| `single_button_2`| Commande | Appliques — toggle                 |
+| `single_button_3`| Commande | Lustre — ON                        |
+| `single_button_4`| Commande | Lustre — OFF                       |
+| `double_button_3`| Commande | Lustre principal — toggle          |
+| `double_button_4`| Commande | Lustre secondaire — toggle         |
+| `long_button_*`  | Valeur   | (à configurer selon vos besoins)   |
+
+La configuration complète tient en quelques minutes via le **mode apprentissage** : appuyer sur chaque bouton, sélectionner la commande cible — terminé.
+
+---
+
 ## FAQ
 
 **Plusieurs règles pour la même valeur source, est-ce possible ?**  
