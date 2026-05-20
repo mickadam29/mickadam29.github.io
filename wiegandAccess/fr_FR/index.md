@@ -12,6 +12,8 @@ Le plugin est **protocole-agnostique** : il fonctionne avec n'importe quel équi
 
 Un **lecteur virtuel de démonstration** est créé automatiquement à l'installation, permettant de tester toutes les fonctionnalités sans aucun matériel.
 
+![Interface principale](screenshot_main.png)
+
 ### Fonctionnalités principales
 
 - Trois modes par lecteur : Badge RFID seul, Code PIN seul, Badge + PIN
@@ -197,6 +199,8 @@ Le fichier exporté peut être réimporté tel quel — il sert de sauvegarde co
 
 ## Gestion des badges
 
+![Gestion des badges](screenshot_badges.png)
+
 Accéder à la liste via le bouton **Badges** sur la page principale.
 
 | Colonne | Description |
@@ -228,6 +232,8 @@ Un accès hors planning est enregistré dans l'historique avec le résultat **Pl
 
 ## Historique des accès
 
+![Historique des accès](screenshot_history.png)
+
 Accessible via le bouton **Historique** sur la page principale.
 
 - Affiche les 500 dernières entrées, tous lecteurs confondus
@@ -253,6 +259,8 @@ Lorsque le seuil est atteint, le lecteur est verrouillé automatiquement.
 | **Bloqué (manuel)** | Rouge | Bouton **Verrouiller tout** | Bouton **RAZ alarme** ou **Réinit.** individuel |
 
 ### Tuile de statut (dashboard)
+
+![Dashboard — tuiles lecteurs](screenshot_dashboard.png)
 
 - Statut coloré (Actif / Bloqué)
 - Compteur d'erreurs et seuil (ex. 2 / 3)
