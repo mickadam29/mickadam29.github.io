@@ -110,6 +110,7 @@ Un seul bloc action suffit. Le plugin gère ensuite la vérification, l'historiq
 
 1. Sur la page principale du plugin, cliquer **+** pour créer un équipement
 2. Renseigner le **nom** et l'**objet parent**, activer et rendre visible si souhaité
+   > **Important :** donner un nom différent de celui de l'équipement z2m. Deux équipements avec le même nom dans le même objet Jeedom génèrent un conflit et la sauvegarde est refusée.
 3. Choisir le **mode d'interface** : Physique
 4. Choisir le **type de lecteur** : Badge RFID, Code PIN, ou Badge + PIN
 5. Cliquer le sélecteur de la commande **event** et choisir l'équipement z2m correspondant
@@ -122,6 +123,7 @@ Un seul bloc action suffit. Le plugin gère ensuite la vérification, l'historiq
 ### Configuration manuelle (autre matériel)
 
 1. Créer un équipement, renseigner le nom et l'objet parent
+   > **Important :** donner un nom différent de celui de l'équipement source. Deux équipements avec le même nom dans le même objet Jeedom génèrent un conflit et la sauvegarde est refusée.
 2. Choisir le **mode d'interface** : Physique
 3. Choisir le **type de lecteur**
 4. Sélectionner la commande **event** depuis l'équipement correspondant

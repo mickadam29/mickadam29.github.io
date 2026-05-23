@@ -1,5 +1,13 @@
 # Changelog — Wiegand Access
 
+## [1.3.1] — 2026-05-23
+
+### Documentation
+
+- Ajout d'un avertissement sur le nom de l'équipement : doit être différent de l'équipement source pour éviter un conflit dans le même objet Jeedom
+
+---
+
 ## [1.3.0] — 2026-05-19
 
 ### Mode Virtuel — Entrées externes
