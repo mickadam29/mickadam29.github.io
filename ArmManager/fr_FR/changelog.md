@@ -4,7 +4,7 @@
 
 ### Corrections
 
-- Icône télécommande/keyfob : remplacement de `fa-gamepad` par `fa-shield-halved`
+- Icône télécommande/keyfob : remplacement de `fa-gamepad` par `fa-shield-alt`
 
 ---
 
