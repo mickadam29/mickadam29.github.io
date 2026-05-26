@@ -12,8 +12,9 @@ Chaque événement reçu déclenche la commande ou le scénario de votre choix.
 - **LDESENK09** : télécommande Zigbee (cluster IAS ACE natif)
 - Tout équipement exposant les valeurs IAS ACE standard via Zigbee2MQTT
 
-**Appareils compatibles via EventTranslator**
+**Appareils compatibles via [EventTranslator](https://mickadam29.github.io/EventTranslator/fr_FR/)**
 - **DAEWOO WKE502Z** et tout appareil utilisant un vocabulaire non conforme IAS ACE
+- Tout appareil dont les valeurs envoyées ne correspondent pas aux 6 événements IAS ACE standard
 
 ---
 
@@ -21,10 +22,12 @@ Chaque événement reçu déclenche la commande ou le scénario de votre choix.
 
 1. Depuis le market Jeedom, installer et activer le plugin **z2m**
 2. Depuis le market Jeedom, rechercher **ArmManager**
-2. Installer le plugin
-3. Activer le plugin dans **Plugins > Gestion des plugins**
+3. Installer le plugin
+4. Activer le plugin dans **Plugins > Gestion des plugins**
 
 Aucune dépendance requise.
+
+> **Optionnel :** si votre appareil n'est pas nativement compatible IAS ACE (badge orange à la découverte), installez également le plugin **[EventTranslator](https://mickadam29.github.io/EventTranslator/fr_FR/)** pour adapter ses valeurs.
 
 ---
 
@@ -33,7 +36,7 @@ Aucune dépendance requise.
 Le bouton **Découverte** analyse les équipements Zigbee présents dans z2m et identifie les candidats compatibles :
 
 - **IAS ACE natif** (badge vert) : l'appareil possède le cluster `ssIasAce` — brancheable directement sur ArmManager
-- **Compatible probable** (badge orange) : l'appareil expose des valeurs arm-related sans cluster IAS ACE natif — à utiliser via EventTranslator
+- **Compatible probable** (badge orange) : l'appareil expose des valeurs arm-related sans cluster IAS ACE natif — passer par [EventTranslator](https://mickadam29.github.io/EventTranslator/fr_FR/) pour adapter les valeurs
 
 Cliquer sur **Utiliser** crée automatiquement un équipement ArmManager pré-configuré avec la commande source. Les appareils déjà configurés sont exclus des résultats.
 
@@ -48,13 +51,22 @@ Ouvrir **Plugins > Sécurité > ArmManager**, puis cliquer sur **Découverte** o
 Renseigner :
 - **Nom** : nom de l'équipement dans Jeedom
 - **Objet parent** : objet Jeedom auquel rattacher l'équipement
+- **Type d'appareil** : Clavier (icône clavier) ou Télécommande / keyfob (icône bouclier) — affecte l'icône dans la liste
 - **Activer / Visible**
 
 ### Étape 2 — Liaison Zigbee2MQTT
 
-Dans la section **Liaison Zigbee2MQTT**, sélectionner la **commande info du clavier** : c'est la commande `action` exposée par l'équipement Z2M (ou la commande traduite par EventTranslator).
+Dans la section **Liaison Zigbee2MQTT**, sélectionner la **commande source** : c'est la commande `action` exposée par l'équipement Z2M (ou la commande traduite par EventTranslator).
 
-### Étape 3 — Actions du clavier
+Un indicateur s'affiche sous le champ :
+- **Dernière valeur reçue** : mise à jour en temps réel dès qu'une touche est pressée
+- **Badge vert — IAS ACE natif** : la valeur est conforme au standard, ArmManager la traite directement
+- **Badge orange — Nécessite EventTranslator** : la valeur n'est pas conforme IAS ACE, il faut passer par EventTranslator pour la traduire
+- **Badge gris — Aucune valeur reçue** : aucun événement reçu depuis le démarrage de Jeedom
+
+Le bouton **↺** force un rafraîchissement manuel de la valeur.
+
+### Étape 3 — Actions du clavier / télécommande
 
 Pour chacun des six événements IAS ACE, choisir le type d'action et la cible :
 
@@ -72,7 +84,11 @@ Pour chaque événement :
 - **Commande** : exécute une commande action Jeedom (ex : `Alarme → Mode Toutes Zones`)
 - **Scénario** : lance un scénario Jeedom (ex : appel d'urgence)
 
-### Étape 4 — Sauvegarder
+### Étape 4 — Importer une configuration (optionnel)
+
+Si vous possédez plusieurs appareils identiques, configurez le premier puis utilisez le bouton **Importer une configuration** (en haut à droite de la section Actions) sur les suivants. La configuration des 6 actions est copiée en un clic depuis n'importe quel autre équipement ArmManager déjà configuré.
+
+### Étape 5 — Sauvegarder
 
 Cliquer sur **Sauvegarder**. Le listener est reconstruit automatiquement.
 
@@ -97,9 +113,23 @@ La LDESENK09 est compatible nativement — elle expose directement le standard I
 
 ---
 
+## Utiliser avec EventTranslator
+
+Certains appareils Zigbee n'exposent pas les valeurs standard IAS ACE. Le plugin **[EventTranslator](https://mickadam29.github.io/EventTranslator/fr_FR/)** permet de traduire en temps réel les valeurs envoyées par l'appareil vers le vocabulaire IAS ACE attendu par ArmManager.
+
+**Workflow :**
+
+1. Dans **EventTranslator**, créer un équipement avec la commande `action` de l'appareil Z2M comme source
+2. Ajouter les règles de traduction : valeur brute → valeur IAS ACE cible
+3. Dans **ArmManager**, sélectionner la commande **traduite** (sortie d'EventTranslator) comme source — et non la commande brute Z2M
+
+La commande source d'ArmManager doit toujours exposer des valeurs IAS ACE standard. Si elle affiche un badge orange, c'est que les valeurs reçues ne sont pas encore traduites.
+
+---
+
 ## Exemple concret — DAEWOO WKE502Z via EventTranslator
 
-Le WKE502Z expose un vocabulaire non conforme IAS ACE (`arm_away`, `arm_home`, `sos`). Utiliser **EventTranslator** pour le traduire :
+Le WKE502Z expose un vocabulaire non conforme IAS ACE (`arm_away`, `arm_home`, `sos`). Configurer **[EventTranslator](https://mickadam29.github.io/EventTranslator/fr_FR/)** pour traduire les valeurs :
 
 | Valeur WKE502Z | Valeur traduite (IAS ACE) |
 |---|---|
@@ -108,14 +138,14 @@ Le WKE502Z expose un vocabulaire non conforme IAS ACE (`arm_away`, `arm_home`, `
 | `disarm` | `disarm` |
 | `sos` | `panic` |
 
-Sélectionner ensuite la commande traduite par EventTranslator comme source dans ArmManager.
+Sélectionner ensuite la commande traduite par EventTranslator comme source dans ArmManager. Le badge passe au vert dès qu'une touche est pressée et que la valeur traduite est conforme.
 
 ---
 
 ## FAQ
 
-**Puis-je utiliser plusieurs claviers simultanément ?**
-Oui, chaque équipement ArmManager est indépendant. Créez un équipement par appareil physique.
+**Puis-je utiliser plusieurs claviers/télécommandes simultanément ?**
+Oui, chaque équipement ArmManager est indépendant. Créez un équipement par appareil physique. Utilisez le bouton **Importer une configuration** pour dupliquer rapidement la configuration d'actions.
 
 **Que se passe-t-il si aucune action n'est configurée pour un événement ?**
 L'événement est simplement ignoré, aucune erreur n'est générée.
@@ -125,3 +155,6 @@ Oui. Vous pouvez associer n'importe quelle commande action ou scénario, pas uni
 
 **Mon appareil expose `arm_night_zones` — comment l'utiliser ?**
 Configurez l'action souhaitée dans le champ **Armement nuit**. Si votre plugin Alarme ne dispose pas d'un mode nuit, vous pouvez le lier à un scénario dédié.
+
+**Le badge reste orange même après configuration dans EventTranslator — est-ce normal ?**
+Oui. Le badge indique la valeur brute reçue par la commande source. Si vous utilisez EventTranslator, la commande source d'ArmManager doit pointer sur la commande **traduite** (sortie d'EventTranslator), pas sur la commande brute Z2M.
