@@ -1,5 +1,13 @@
 # Changelog ArmManager
 
+## v1.0.2 (2026-05-27)
+
+### Nouveautés
+
+- Ajout de l'action **Tamper** (7ème événement) : possibilité de lier une commande info binaire tamper de l'équipement Z2M et de configurer l'action à déclencher quand elle passe à 1
+
+---
+
 ## v1.0.1 (2026-05-26)
 
 ### Corrections
