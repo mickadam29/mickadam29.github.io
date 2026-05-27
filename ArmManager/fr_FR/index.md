@@ -66,11 +66,13 @@ Un indicateur s'affiche sous le champ :
 
 Le bouton **↺** force un rafraîchissement manuel de la valeur.
 
+**Tamper (optionnel)** : si l'équipement source expose une commande info binaire de sabotage (ex : `tamper`), sélectionnez-la dans le champ **Tamper**. Dès qu'elle passe à `1`, l'action **Tamper** configurée dans le tableau ci-dessous est déclenchée. Laissez ce champ vide si l'appareil ne remonte pas de signal tamper.
+
 ### Étape 3 — Actions du clavier / télécommande
 
-Pour chacun des six événements IAS ACE, choisir le type d'action et la cible :
+Pour chacun des sept événements, choisir le type d'action et la cible :
 
-| Événement | Valeur Z2M | Description |
+| Événement | Valeur | Description |
 |---|---|---|
 | **Armement total** | `arm_all_zones` | Toutes les zones actives |
 | **Armement jour** | `arm_day_zones` | Zones périmètre (portes/fenêtres) |
@@ -78,11 +80,12 @@ Pour chacun des six événements IAS ACE, choisir le type d'action et la cible :
 | **Désarmement** | `disarm` | Désactive l'alarme |
 | **Panique** | `panic` | Alerte panique |
 | **Urgence** | `emergency` | Alerte urgence |
+| **Tamper** | `tamper` | Sabotage détecté sur l'appareil (optionnel) |
 
 Pour chaque événement :
 - **Aucune action** : événement ignoré
 - **Commande** : exécute une commande action Jeedom (ex : `Alarme → Mode Toutes Zones`)
-- **Scénario** : lance un scénario Jeedom (ex : appel d'urgence)
+- **Scénario** : lance un scénario Jeedom (ex : sirène + notification)
 
 ### Étape 4 — Importer une configuration (optionnel)
 
@@ -97,6 +100,10 @@ Cliquer sur **Sauvegarder**. Le listener est reconstruit automatiquement.
 ## Détection panique automatique
 
 Si l'équipement source expose une commande info `sos_alarm` (commande binaire indiquant une alarme active), ArmManager la surveille en permanence. Dès qu'elle passe à `1`, l'action `panic` est déclenchée **quelle que soit la valeur reçue** sur la commande principale.
+
+## Détection tamper (sabotage)
+
+Si une commande tamper est configurée dans le champ **Tamper** de la section "Liaison Zigbee2MQTT", ArmManager surveille cette commande indépendamment des événements IAS ACE. Dès qu'elle passe à `1`, l'action **Tamper** du tableau est exécutée. Ce champ est entièrement optionnel : si l'appareil ne remonte pas de signal tamper ou si aucune action n'est souhaitée, laissez-le vide.
 
 ---
 
