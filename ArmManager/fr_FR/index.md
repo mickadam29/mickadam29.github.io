@@ -165,3 +165,6 @@ Configurez l'action souhaitée dans le champ **Armement nuit**. Si votre plugin 
 
 **Le badge reste orange même après configuration dans EventTranslator — est-ce normal ?**
 Oui. Le badge indique la valeur brute reçue par la commande source. Si vous utilisez EventTranslator, la commande source d'ArmManager doit pointer sur la commande **traduite** (sortie d'EventTranslator), pas sur la commande brute Z2M.
+
+**Le plugin fonctionne-t-il avec un autre protocole que Zigbee (Z-Wave, Matter...) ?**
+Pas officiellement pour le moment. ArmManager est conçu autour du standard IAS ACE (Zigbee). Si vous avez un besoin concret sur un autre protocole, faites-le savoir — une évolution pourra être envisagée.
