@@ -1,5 +1,13 @@
 # Changelog EventTranslator
 
+## v1.0.2 (2026-05-28)
+
+### Améliorations
+
+- Commandes de type **message** : affichage de deux champs distincts **Sujet** et **Corps** dans la table de correspondance
+- Bouton **Tester** : envoie correctement sujet et corps pour les commandes de type message
+- Exécution réelle via le listener : sujet et corps transmis correctement au plugin cible
+
 ## v1.0.1 (2026-05-28)
 
 ### Améliorations
