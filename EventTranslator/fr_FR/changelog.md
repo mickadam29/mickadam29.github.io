@@ -1,5 +1,11 @@
 # Changelog EventTranslator
 
+## v1.0.3 (2026-05-28)
+
+### Améliorations
+
+- Labels **Sujet** et **Corps** affichés devant les champs correspondants pour les commandes de type message
+
 ## v1.0.2 (2026-05-28)
 
 ### Améliorations
