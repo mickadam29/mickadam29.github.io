@@ -1,5 +1,25 @@
 # Changelog EventTranslator
 
+## v1.0.7 (2026-05-28)
+
+### Corrections
+
+- Champ **Option** des commandes de type *slider* passé en texte libre : accepte désormais aussi bien des valeurs numériques (ex: `200`) que des valeurs hex (ex: `#d4cfbc` pour color_temp)
+- Suppression de l'auto-préfixe `#` : la valeur est transmise telle quelle à la commande cible — l'utilisateur saisit exactement ce qu'attend le plugin
+
+## v1.0.6 (2026-05-28)
+
+### Améliorations
+
+- Champ Option dynamique selon le type de commande : label et placeholder adaptés, input numérique pour slider, color picker pour color, champ masqué pour binary
+- Bouton Tester : format JSON correct pour tous les subtypes (slider, color, select…)
+
+## v1.0.5 (2026-05-28)
+
+### Corrections
+
+- Bouton **Tester** : la valeur Option (ex: slider) est correctement transmise à la commande cible
+
 ## v1.0.4 (2026-05-28)
 
 ### Améliorations
