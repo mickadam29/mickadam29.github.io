@@ -1,5 +1,12 @@
 # Changelog EventTranslator
 
+## v1.0.1 (2026-05-28)
+
+### Améliorations
+
+- Bouton **Tester** ajouté sur chaque ligne de type *Commande* : exécute la commande directement depuis l'interface de configuration
+- Titres (tooltips) ajoutés sur les boutons de sélection de commande et de scénario
+
 ## v1.0.0 (2026-05-14)
 
 Première version publiée sur le market Jeedom.
