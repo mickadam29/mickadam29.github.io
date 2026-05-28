@@ -1,5 +1,11 @@
 # Changelog EventTranslator
 
+## v1.0.4 (2026-05-28)
+
+### Améliorations
+
+- Label **Option** affiché devant le champ de valeur des commandes non-message (slider, toggle…)
+
 ## v1.0.3 (2026-05-28)
 
 ### Améliorations
