@@ -108,6 +108,8 @@ Un seul bloc action suffit. Le plugin gère ensuite la vérification, l'historiq
 
 ### Voie rapide — Interfaces WIEGAND ZIGBEE (PTVO) disponibles auprès de l'auteur
 
+![Interface WIEGAND ZIGBEE dans son boîtier étanche](hardware_boitier.jpeg)
+
 1. Sur la page principale du plugin, cliquer **+** pour créer un équipement
 2. Renseigner le **nom** et l'**objet parent**, activer et rendre visible si souhaité
    > **Important :** donner un nom différent de celui de l'équipement z2m. Deux équipements avec le même nom dans le même objet Jeedom génèrent un conflit et la sauvegarde est refusée.
