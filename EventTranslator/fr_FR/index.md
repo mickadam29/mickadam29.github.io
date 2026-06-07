@@ -32,8 +32,10 @@ Sélectionner l'équipement Jeedom source dans la liste déroulante. Un équipem
 
 Dans l'onglet **Général** :
 - **Nom** : renommer l'équipement si nécessaire
-- **Objet parent** : objet Jeedom auquel rattacher l'équipement
+- **Objet parent** : objet Jeedom auquel rattacher l'équipement — libre, indépendant de la source
 - **Activer / Visible** : contrôle la disponibilité et l'affichage sur le dashboard
+
+> **Convention de nommage** : le nom de l'équipement `_et` suit automatiquement celui de la source. Si la source est renommée `Interrupteur Salon`, l'équipement devient `Interrupteur Salon_et` au prochain chargement de la page. Un renommage manuel est possible à tout moment, mais sera remplacé si la source est renommée à nouveau.
 
 ### Étape 3 — Ajouter des commandes
 
@@ -98,8 +100,8 @@ Les commandes info de l'équipement `_et` sont utilisables comme n'importe quell
 ArmManager est un plugin Jeedom (développé par le même auteur) conçu pour regrouper différents moyens d'activer et désactiver l'alarme via le plugin **Alarme** natif de Jeedom. Il centralise les équipements de sécurité Zigbee — télécommandes et claviers — et les relie aux modes d'alarme prédéfinis.
 
 Dans cette installation, ArmManager gère :
-- une **télécommande LDESENK09** (via EventTranslator, voir ci-dessous)
-- un **clavier DAEWOO WKE502Z** (compatible nativement, valeurs déjà au bon format)
+- une **télécommande LDESENK09** (compatible nativement, valeurs déjà au format IAS ACE)
+- un **clavier DAEWOO WKE502Z** (via EventTranslator, voir ci-dessous)
 
 Chaque bouton ou action est associé à une commande du plugin Alarme ou à un scénario :
 
@@ -114,36 +116,36 @@ Chaque bouton ou action est associé à une commande du plugin Alarme ou à un s
 
 ---
 
-### Pourquoi EventTranslator est nécessaire pour la LDESENK09
+### Pourquoi EventTranslator est nécessaire pour le DAEWOO WKE502Z
 
-La LDESENK09 utilise les clusters de sécurité IAS (Intruder Alarm System). Via Zigbee2MQTT, sa commande info `Button` expose des valeurs au format IAS standard : `arm_all_zones`, `arm_day_zones`, `disarm` et `panic`.
+Le DAEWOO WKE502Z envoie ses valeurs dans un format générique : `arm_away`, `arm_home`, `disarm` et `sos`.
 
-ArmManager attend les valeurs `arm_away`, `arm_home`, `disarm` et `sos`. Les deux vocabulaires sont incompatibles à l'état brut.
+ArmManager parle nativement le standard IAS ACE et attend : `arm_all_zones`, `arm_day_zones`, `disarm` et `panic`. Les deux vocabulaires sont incompatibles à l'état brut.
 
 EventTranslator résout ce problème sans scénario de conversion :
 
-1. Ajouter la LDESENK09 comme équipement source dans EventTranslator
-2. Surveiller sa commande info `Button`
-3. Utiliser le **mode apprentissage** pour capturer les quatre valeurs en appuyant sur chaque bouton
+1. Ajouter le DAEWOO WKE502Z comme équipement source dans EventTranslator
+2. Surveiller sa commande info `action`
+3. Utiliser le **mode apprentissage** pour capturer les quatre valeurs en activant chaque action sur le clavier
 4. Mapper chaque valeur source vers la valeur attendue par ArmManager (type `Valeur`) :
 
-| Valeur source (IAS Z2M) | Valeur cible (ArmManager) |
-|-------------------------|---------------------------|
-| `arm_all_zones`         | `arm_away`                |
-| `arm_day_zones`         | `arm_home`                |
-| `disarm`                | `disarm`                  |
-| `panic`                 | `sos`                     |
+| Valeur source (WKE502Z) | Valeur cible (ArmManager IAS ACE) |
+|-------------------------|-----------------------------------|
+| `arm_away`              | `arm_all_zones`                   |
+| `arm_home`              | `arm_day_zones`                   |
+| `disarm`                | `disarm`                          |
+| `sos`                   | `panic`                           |
 
 5. Sauvegarder — l'équipement `_et` produit désormais les valeurs dans le format natif d'ArmManager
-6. Dans ArmManager, sélectionner la commande `Button` de l'équipement `_et` comme source
+6. Dans ArmManager, sélectionner la commande de l'équipement `_et` comme source
 
-La télécommande est opérationnelle sans modifier ni la LDESENK09, ni ArmManager, ni écrire de scénario de conversion.
+Le clavier est opérationnel sans modifier ni le WKE502Z, ni ArmManager, ni écrire de scénario de conversion.
 
 ---
 
 ### Au-delà de l'alarme — le cas SOS
 
-EventTranslator ne se limite pas à la gestion d'alarme. Dans cet exemple, le bouton SOS de la télécommande est lié à un scénario Jeedom (`Appel Secours et Aidant`) plutôt qu'à une commande alarme. Ce scénario peut déclencher n'importe quelle action : appel téléphonique automatique, notification, déclenchement d'une sirène, envoi d'un SMS…
+EventTranslator ne se limite pas à la gestion d'alarme. Dans cet exemple, le bouton SOS du clavier peut être relié à un scénario Jeedom (`Appel Secours et Aidant`) plutôt qu'à une commande alarme. Ce scénario peut déclencher n'importe quelle action : appel téléphonique automatique, notification, déclenchement d'une sirène, envoi d'un SMS…
 
 Toute commande ou scénario Jeedom peut être associé à n'importe quelle valeur source via EventTranslator.
 

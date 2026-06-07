@@ -1,5 +1,17 @@
 # Changelog EventTranslator
 
+## v1.0.8 (2026-06-07)
+
+### Améliorations
+
+- **Synchronisation automatique du nom `_et`** : lorsque l'équipement source est renommé, l'équipement `_et` est automatiquement renommé au rechargement de la page (`<nouveau_nom>_et`)
+- **Mise à jour immédiate de la tuile** : le changement d'objet parent dans la vue détail met à jour le label de la tuile sans rechargement de page
+- **Indicateur source introuvable** : badge ⚠ rouge et bordure rouge sur les tuiles dont l'équipement source a été supprimé ; bandeau d'alerte dans la vue détail
+
+### Corrections
+
+- Correction d'un bug où `save()` pouvait écraser l'objet parent lors de la synchronisation du nom de source (remplacement par un `UPDATE` SQL ciblé)
+
 ## v1.0.7 (2026-05-28)
 
 ### Corrections
