@@ -1,5 +1,14 @@
 # Changelog ArmManager
 
+## v1.0.3 (2026-06-20)
+
+### Corrections
+
+- **Noms toujours à jour** : les noms de commande source, tamper et des actions (commandes et scénarios) sont désormais résolus en temps réel à l'ouverture du formulaire — plus de nom obsolète après un renommage
+- **Namespace jQuery corrigé** : les gestionnaires d'événements utilisaient le namespace `.daewooKeypad` (copier-coller) au lieu de `.ArmManager`
+
+---
+
 ## v1.0.2 (2026-05-27)
 
 ### Nouveautés
