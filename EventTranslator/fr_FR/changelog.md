@@ -1,5 +1,13 @@
 # Changelog EventTranslator
 
+## v1.0.9 (2026-06-20)
+
+### Corrections
+
+- **Noms toujours à jour** : les noms de l'équipement source, des commandes source et des cibles (commandes et scénarios) dans les règles de mapping sont désormais résolus en temps réel à l'ouverture du formulaire — plus de nom obsolète après un renommage
+- **Double rebuild listeners corrigé** : lors d'une sauvegarde, les listeners n'étaient reconstruits qu'une fois (au lieu de deux), après que toutes les commandes soient en base
+- **Synchronisation du nom `_et`** : utilise désormais `save()` standard au lieu d'un UPDATE SQL direct
+
 ## v1.0.8 (2026-06-07)
 
 ### Améliorations
