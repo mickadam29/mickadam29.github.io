@@ -1,5 +1,13 @@
 # Changelog — Wiegand Access
 
+## [1.3.2] — 2026-06-20
+
+### Corrections
+
+- **Noms de commandes toujours à jour** : les noms affichés dans le formulaire de configuration d'un lecteur (Commande event, Commande badge, Commande verrou…) sont désormais résolus en temps réel depuis Jeedom — plus de nom obsolète si l'équipement source a été renommé
+
+---
+
 ## [1.3.1] — 2026-05-23
 
 ### Documentation

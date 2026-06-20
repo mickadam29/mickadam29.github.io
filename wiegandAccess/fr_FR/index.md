@@ -301,6 +301,9 @@ Oui. Le plugin fonctionne avec tout équipement Jeedom capable d'envoyer les év
 **Mon équipement envoie les données dans un format différent — que faire ?**  
 Utiliser le mode **Virtuel — Entrées externes**. Créez un lecteur en mode "Entrées externes", puis écrivez un scénario Jeedom qui lit les données de votre équipement, les formate si nécessaire, et appelle la commande `Envoyer un badge` ou `Envoyer un PIN` du lecteur. Le plugin prend en charge tout le reste.
 
+**J'ai renommé mon équipement dans Z2M et le nom affiché dans wiegandAccess ne suit pas**  
+Le nom s'actualise automatiquement à la prochaine ouverture du formulaire du lecteur — aucune action requise. Si le champ affiche `⚠ Commande introuvable`, l'équipement source a été supprimé et recréé (nouvel ID Jeedom) : re-sélectionner la commande event.
+
 **Le converter z2m ne se charge pas**  
 Vérifier que le plugin z2m est installé dans `/var/www/html/plugins/z2m`, activer le plugin wiegandAccess, puis redémarrer Zigbee2MQTT.
 
